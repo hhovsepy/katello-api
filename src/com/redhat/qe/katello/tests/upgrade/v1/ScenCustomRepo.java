@@ -126,13 +126,13 @@ public class ScenCustomRepo implements KatelloConstants{
 		Assert.assertTrue(res.getExitCode().intValue()==0, "Check - return code");
 		res = cs.update_addProduct(_product);
 		Assert.assertTrue(res.getExitCode().intValue()==0, "Check - return code");
-		res = cs.promote();
+		res = cs.apply();
 		Assert.assertTrue(res.getExitCode().intValue()==0, "Check - return code");
 
 		KatelloSystem sys = new KatelloSystem(_system, _org, _env);
 		sys.runOn(clients[0]);
 		sys.rhsm_registerForce();
-		String pool = KatelloCli.grepCLIOutput("PoolId", sys.subscriptions_available().getStdout().trim(),1);
+		String pool = KatelloCli.grepCLIOutput("Id", sys.subscriptions_available().getStdout().trim(),1);
 		Assert.assertNotNull(pool);
 		sys.rhsm_subscribe(pool);
 		
