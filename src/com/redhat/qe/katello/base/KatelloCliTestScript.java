@@ -208,21 +208,18 @@ implements KatelloConstants {
 	 * After initializing in clears the cache from previous run. "en_US"
 	 */
 	public static String getText(String key, Object...args) {
-		if (messageBundle == null || inputBundle == null) {
+		if (inputBundle == null) {
 			String localeStr = System.getProperty("katello.locale", KATELLO_DEFAULT_LOCALE);
 			String[] split = localeStr.split("_", 2);					
 			Locale locale = new Locale(split[0], split[1]);
 			
-			messageBundle = ResourceBundle.getBundle(messageFileName, locale);
 			inputBundle = ResourceBundle.getBundle(inputFileName, locale);
 			ResourceBundle.clearCache(); //this is mandatory
 		}
-		if (messageBundle.containsKey(key)) {
-			return String.format(messageBundle.getLocale(), messageBundle.getString(key), args);
-		} else if (inputBundle.containsKey(key)) {
+		if (inputBundle.containsKey(key)) {
 			return String.format(inputBundle.getLocale(), inputBundle.getString(key), args);
 		} else {
-			log.warning("Message by key: " + key + " not found in locale " + messageBundle.getLocale());
+			log.warning("Message by key: " + key + " not found in locale " + inputBundle.getLocale());
 			return null;
 		}
 	}
